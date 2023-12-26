@@ -12,10 +12,6 @@ interface AccountRepository : JpaRepository<Account, Long> {
     @Lock(LockModeType.PESSIMISTIC_WRITE)
     fun findByAccountId(accountId: Long): Account?
 
-//    @Modifying
-//    @Query("UPDATE Account a SET a.balance = :balance WHERE a.accountId = :accountId")
-//    fun updateBalance(@Param("accountId") accountId: Long, @Param("balance") balance: BigDecimal)
-
     @Lock(LockModeType.PESSIMISTIC_WRITE)
     fun save(account: Account): Account
 }
