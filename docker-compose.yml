@@ -1,0 +1,35 @@
+version: '3.8'
+
+services:
+  database:
+    image: postgres:latest
+    environment:
+      POSTGRES_DB: fintech
+      POSTGRES_USER: fintech_superuser
+      POSTGRES_PASSWORD: fintech_superuser_password
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - my_network
+
+  fintech-backend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    depends_on:
+      - database
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://database:5432/fintech
+      SPRING_DATASOURCE_USERNAME: fintech_superuser
+      SPRING_DATASOURCE_PASSWORD: fintech_superuser_password
+    networks:
+      - my_network
+
+volumes:
+  postgres_data:
+networks:
+  my_network:
